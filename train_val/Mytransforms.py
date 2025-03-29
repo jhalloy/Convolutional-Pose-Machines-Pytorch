@@ -4,7 +4,7 @@ import torch
 import random
 import numpy as np
 import numbers
-import collections
+import collections.abc
 import cv2
 
 def normalize(tensor, mean, std):
@@ -57,7 +57,7 @@ def resize(img, kpt, center, ratio):
         lists:         Resized center points.
     """
 
-    if not (isinstance(ratio, numbers.Number) or (isinstance(ratio, collections.Iterable) and len(ratio) == 2)):
+    if not (isinstance(ratio, numbers.Number) or (isinstance(ratio, collections.abc.Iterable) and len(ratio) == 2)):
         raise TypeError('Got inappropriate ratio arg: {}'.format(ratio))
     
     h, w, _ = img.shape
@@ -129,7 +129,7 @@ class TestResized(object):
     """
 
     def __init__(self, size):
-        assert (isinstance(size, int) or (isinstance(size, collections.Iterable) and len(size) == 2))
+        assert (isinstance(size, int) or (isinstance(size, collections.abc.Iterable) and len(size) == 2))
         if isinstance(size, int):
             self.size = (size, size)
         else:

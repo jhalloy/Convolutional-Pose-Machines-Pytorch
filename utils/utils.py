@@ -72,7 +72,7 @@ def save_checkpoint(state, is_best, filename='checkpoint'):
 def Config(filename):
 
     with open(filename, 'r') as f:
-        parser = edict(yaml.load(f))
+        parser = edict(yaml.load(f, Loader=yaml.FullLoader))
     for x in parser:
-        print '{}: {}'.format(x, parser[x])
+        print('{}: {}'.format(x, parser[x]))
     return parser

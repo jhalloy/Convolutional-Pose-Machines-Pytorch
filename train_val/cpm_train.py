@@ -131,8 +131,8 @@ def train_val(model, args):
                                                  policy_parameter=config.policy_parameter, multiple=multiple)
             data_time.update(time.time() - end)
 
-            heatmap = heatmap.cuda(async=True)
-            centermap = centermap.cuda(async=True)
+            heatmap = heatmap.cuda(non_blocking=True)
+            centermap = centermap.cuda(non_blocking=True)
 
             input_var = torch.autograd.Variable(input)
             heatmap_var = torch.autograd.Variable(heatmap)
@@ -150,10 +150,10 @@ def train_val(model, args):
 
 
             loss = loss1 + loss2 + loss3 + loss4 + loss5 + loss6
-            losses.update(loss.data[0], input.size(0))
+            losses.update(loss.item(), input.size(0))
             for cnt, l in enumerate(
                     [loss1, loss2, loss3, loss4, loss5, loss6]):
-                losses_list[cnt].update(l.data[0], input.size(0))
+                losses_list[cnt].update(l.item(), input.size(0))
 
             optimizer.zero_grad()
             loss.backward()
@@ -175,8 +175,8 @@ def train_val(model, args):
                     print('Loss{0} = {loss1.val:.8f} (ave = {loss1.avg:.8f})\t'
                           .format(cnt + 1, loss1=losses_list[cnt]))
 
-                print time.strftime(
-                '%Y-%m-%d %H:%M:%S -----------------------------------------------------------------------------------------------------------------\n',time.localtime())
+                print(time.strftime(
+                '%Y-%m-%d %H:%M:%S -----------------------------------------------------------------------------------------------------------------\n',time.localtime()))
 
                 batch_time.reset()
                 data_time.reset()
@@ -194,8 +194,8 @@ def train_val(model, args):
 
                 model.eval()
                 for j, (input, heatmap, centermap) in enumerate(val_loader):
-                    heatmap = heatmap.cuda(async=True)
-                    centermap = centermap.cuda(async=True)
+                    heatmap = heatmap.cuda(non_blocking=True)
+                    centermap = centermap.cuda(non_blocking=True)
 
                     input_var = torch.autograd.Variable(input)
                     heatmap_var = torch.autograd.Variable(heatmap)
@@ -211,10 +211,10 @@ def train_val(model, args):
                     loss6 = criterion(heat6, heatmap_var) * heat_weight
 
                     loss = loss1 + loss2 + loss3 + loss4 + loss5 + loss6
-                    losses.update(loss.data[0], input.size(0))
+                    losses.update(loss.item(), input.size(0))
                     for cnt, l in enumerate(
                             [loss1, loss2, loss3, loss4, loss5, loss6]):
-                        losses_list[cnt].update(l.data[0], input.size(0))
+                        losses_list[cnt].update(l.item(), input.size(0))
 
                     batch_time.update(time.time() - end)
                     end = time.time()
@@ -236,9 +236,9 @@ def train_val(model, args):
                             print('Loss{0} = {loss1.val:.8f} (ave = {loss1.avg:.8f})\t'
                                   .format(cnt + 1, loss1=losses_list[cnt]))
 
-                        print time.strftime(
+                        print(time.strftime(
                             '%Y-%m-%d %H:%M:%S -----------------------------------------------------------------------------------------------------------------\n',
-                            time.localtime())
+                            time.localtime()))
                         batch_time.reset()
                         losses.reset()
                         for cnt in range(6):
