@@ -1,12 +1,12 @@
-workers: 4
+workers: 1
 weight_decay: 0.0005
 momentum: 0.9
 display: 50
-max_iter: 1000
+max_iter: 62500
 batch_size: 16
 test_interval: 50
 topk: 3
-base_lr: 0.001
+base_lr: 0.000004
 start_iters: 0
 best_model: 12345678.9
 #-------------lr_policy--------------------#
