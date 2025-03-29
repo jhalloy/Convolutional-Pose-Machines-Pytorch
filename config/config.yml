@@ -4,7 +4,7 @@ momentum: 0.9
 display: 50
 max_iter: 62500
 batch_size: 16
-test_interval: 50
+test_interval: 750
 topk: 3
 base_lr: 0.000004
 start_iters: 0
